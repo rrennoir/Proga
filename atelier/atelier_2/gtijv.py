@@ -13,7 +13,7 @@ class Player:
         return f"Name: {self.pseudo}\nPseudo: {self.pseudo}\nCountry: {self.country.name}"
 
     @staticmethod
-    def Play():
+    def play():
         nb = int(input("Enter a number. "))
 
         while not 1 <= nb <= 10:
