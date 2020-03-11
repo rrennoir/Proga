@@ -38,7 +38,8 @@ class Human:
     def age(self):
         today = datetime.date.today()
         age = today.year - self._birthday.year 
-        if (today.month < self._birthday.month) or (today.month <= self._birthday.month and today.day < self._birthday.day):
+        if ((today.month < self._birthday.month) 
+            or (today.month <= self._birthday.month and today.day < self._birthday.day)):
             age -= 1
 
         return age
