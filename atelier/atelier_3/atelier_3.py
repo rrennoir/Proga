@@ -1,6 +1,7 @@
 import random
 import datetime
 
+
 class Human:
 
     def __init__(self, name, bd=None):
@@ -11,7 +12,7 @@ class Human:
 
         else:
             self._birthday = datetime.date.today()
-        
+
         self._gender = random.choice("MF")
 
     @property
@@ -37,18 +38,19 @@ class Human:
     @property
     def age(self):
         today = datetime.date.today()
-        age = today.year - self._birthday.year 
-        if ((today.month < self._birthday.month) 
-            or (today.month <= self._birthday.month and today.day < self._birthday.day)):
+        age = today.year - self._birthday.year
+        if ((today.month < self._birthday.month)
+                or (today.month <= self._birthday.month
+                    and today.day < self._birthday.day)):
             age -= 1
 
         return age
-    
+
     def say(self, message):
         print(self.name, ":", message)
 
 
-if __name__=="__main__" :
+if __name__ == "__main__":
     bd = datetime.date(1999, 8, 11)
     bob = Human("Bob", bd)
     bob.say("I am " + str(bob.age) + " years old")
