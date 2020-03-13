@@ -68,4 +68,4 @@ if __name__ == "__main__":
 
     print(Player.nb_players)
 
-    billy.Play()
+    billy.play()
