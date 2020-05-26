@@ -1,8 +1,6 @@
 import random
 import datetime
 
-# TODO Enemies AI
-
 
 def clamp(value, min_value, max_value):
 
@@ -71,7 +69,6 @@ class Player(Entity):
         self._lock_tail = False
         self._has_paused = False
         self._has_quit = False
-        self._is_catch = False
 
     @property
     def name(self):
@@ -96,14 +93,6 @@ class Player(Entity):
     @property
     def has_quit(self):
         return self._has_quit
-
-    @property
-    def is_catch(self):
-        return self._is_catch
-
-    @is_catch.setter
-    def is_catch(self, is_catch):
-        self._is_catch = is_catch
 
     def get_input(self, board_size):
         text = "Pause: p | Resume: r\nQuit: quit\nMouvement (z,q,s,d): "
@@ -174,7 +163,7 @@ class Game:
         self._board_size = size
         self._enemies = []
         self._candies = []
-        self._candiesBonus = (-1, 1, 2, 3)
+        self._candies_bonus = (-1, 1, 2, 3)
         self._time_end = None
 
     @property
@@ -198,8 +187,8 @@ class Game:
         return self._candies
 
     @property
-    def candiesBonus(self):
-        return self._candiesBonus
+    def candies_bonus(self):
+        return self._candies_bonus
 
     @property
     def time_end(self):
@@ -250,7 +239,7 @@ class Game:
     def check_candy(self):
 
         if self.player.position in self.candies:
-            points = random.choice(self.candiesBonus)
+            points = random.choice(self.candies_bonus)
             self.player.add_points(points * Game.mode[self.level]["multi"])
             self.candies.remove(self.player.position)
 
@@ -277,7 +266,7 @@ class Game:
 
     # Regarde si un enemie a attraper le serpent
     def check_catch(self):
-        self.player.is_catch = self.player.position in self.enemies_position()
+        return self.player.position in self.enemies_position()
 
     # Joue une partie complète
     def play(self):
@@ -289,7 +278,7 @@ class Game:
         self.draw(time_now)
 
         while (time_now < self._time_end and not self.player.has_quit
-               and not self.player.bite_tail() and not self.player.is_catch):
+               and not self.player.bite_tail() and not self.check_catch()):
 
             self.player.get_input(self.board_size)
 
@@ -299,17 +288,15 @@ class Game:
                 if random.randint(1, 3) == 1:
                     self.pop_candy()
 
+                for enemy in self.enemies:
+                    enemy.chasse_player(self.board_size)
+
                 if (random.randint(1, 100) < Game.mode[self.level]["spawn"]):
                     self.spawn_enemy()
 
                 self.player.move_tail()
                 print(self.player.position)
                 print(self.player.tail)
-
-                for enemy in self.enemies:
-                    enemy.chasse_player(self.board_size)
-
-                self.check_catch()
 
                 self.draw(time_now)
 
@@ -325,8 +312,11 @@ class Game:
         if self.player.bite_tail():
             print("Tu as mordu ta queue !")
 
-        elif self.player.is_catch:
+        elif self.check_catch():
             print("Tu as été attraper !")
+
+        elif time_now > self._time_end:
+            print("Temps écouler !")
 
         print("Vous avez", self.player.points, "points")
 
