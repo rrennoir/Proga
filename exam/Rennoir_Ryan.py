@@ -2,17 +2,6 @@ import random
 import datetime
 
 
-def clamp(value, min_value, max_value):
-
-    if value > max_value:
-        value = max_value
-
-    elif value < min_value:
-        value = min_value
-
-    return value
-
-
 class Entity:
 
     def __init__(self, position):
@@ -200,7 +189,7 @@ class Game:
 
         minute_left = time_left.seconds // 60
         seconds_left = time_left.seconds - 60 * minute_left
-        tenth_left = clamp(time_left.microseconds // 100_000, 0, 9)
+        tenth_left = time_left.microseconds // 100_000
 
         print(f"Time left: {minute_left}:{seconds_left}.{tenth_left}")
         print(f"Score {self.player.points}")
