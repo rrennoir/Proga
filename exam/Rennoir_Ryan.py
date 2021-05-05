@@ -228,7 +228,7 @@ class Game:
     # Fait apparaitre un ou plusieurs bonbon
     def pop_candy(self, to_pop=1):
 
-        for i in range(to_pop):
+        for _ in range(to_pop):
             new_candy = (random.choice(range(self.board_size)),
                          random.choice(range(self.board_size)))
 

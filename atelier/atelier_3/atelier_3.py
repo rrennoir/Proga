@@ -29,7 +29,7 @@ class Human:
 
     @property
     def gender(self):
-        return _gender
+        return self._gender
 
     @gender.setter
     def gender(self, new_gender):
